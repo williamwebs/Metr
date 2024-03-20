@@ -7,13 +7,23 @@ import {
   faBell,
   faBoltLightning,
   faGear,
+  faSignOut,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { signOut } from "next-auth/react";
 
 const DashboardNav = () => {
   const [openMenu, setOpenMenu] = useState(false);
+
+  const handleSignOut = () => {
+    signOut("google");
+    return redirect("/");
+  };
+
+  // const { data: session } = useSession();
+  // console.log(session);
 
   return (
     <header>
@@ -61,8 +71,11 @@ const DashboardNav = () => {
                   className="w-5 h-5 text-gray-500"
                 />
               </button>
-              <div className="hidden md:flex">
-                <CTA title="Sign Out" icon={false} />
+              <div className="hidden md:flex" onClick={handleSignOut}>
+                <button type="submit" className="button">
+                  Logout
+                  <FontAwesomeIcon icon={faSignOut} className="w-3" />
+                </button>
               </div>
 
               {/* menu icon */}
