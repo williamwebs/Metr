@@ -1,11 +1,19 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import CTA from "@/components/button/CTA";
 import { faHand } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-const Dashboard = () => {
+const Dashboard = async () => {
   const profileCompleted = true;
+  const session = await getServerSession(authOptions);
 
+  // redirect to landing page if user is not authenticated
+  if (!session) redirect("/");
+
+  // display if user is signed in
   return (
     <main>
       {/* display a dialogue that prompts user to complete their profile before they can see the dashboard */}

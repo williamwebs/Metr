@@ -3,8 +3,18 @@ import { features } from "@/constants/constants";
 import HowItWorks from "@/components/HowItWorks";
 import HeroSection from "@/components/HeroSection";
 import CTA from "@/components/button/CTA";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+  console.log(session);
+
+  // redirect user to dashboard when authenticated
+  if (session) redirect("/dashboard");
+
+  // display if user is not signed in
   return (
     <main className="min-h-screen">
       <HeroSection />
