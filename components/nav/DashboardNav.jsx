@@ -17,11 +17,6 @@ import { signOut } from "next-auth/react";
 const DashboardNav = () => {
   const [openMenu, setOpenMenu] = useState(false);
 
-  const handleSignOut = () => {
-    signOut("google");
-    return redirect("/");
-  };
-
   // const { data: session } = useSession();
   // console.log(session);
 
@@ -71,7 +66,7 @@ const DashboardNav = () => {
                   className="w-5 h-5 text-gray-500"
                 />
               </button>
-              <div className="hidden md:flex" onClick={handleSignOut}>
+              <div className="hidden md:flex" onClick={() => signOut()}>
                 <button type="submit" className="button">
                   Logout
                   <FontAwesomeIcon icon={faSignOut} className="w-3" />

@@ -1,8 +1,12 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import CTA from "@/components/button/CTA";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import React from "react";
 
-const Profile = () => {
+const Profile = async () => {
+  const session = await getServerSession(authOptions);
+  console.log("session:" + session);
   return (
     <div className="mx-auto max-w-3xl">
       {/* display a form that fetches the user details from the db auth */}
@@ -10,8 +14,8 @@ const Profile = () => {
       <div className="flex flex-col md:flex-row items-start gap-10 md:gap-20">
         <div className="rounded-full flex items-center justify-center shadow-md">
           <Image
-            src={"/"}
-            alt=""
+            src={session?.user?.image}
+            alt="avartar"
             width={100}
             height={100}
             className="rounded-full"
