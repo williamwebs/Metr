@@ -12,13 +12,13 @@ const Profile = async () => {
       {/* display a form that fetches the user details from the db auth */}
       {/* the form should also accept users phone number  */}
       <div className="flex flex-col md:flex-row items-start gap-10 md:gap-20">
-        <div className="rounded-full flex items-center justify-center shadow-md">
+        <div className="rounded-full flex items-center justify-center shadow">
           <Image
             src={session?.user?.image}
             alt="avartar"
             width={100}
             height={100}
-            className="rounded-full"
+            className="rounded-full shadow-md"
           />
         </div>
 
@@ -44,6 +44,7 @@ const Profile = async () => {
                   type="text"
                   name="name"
                   placeholder="fullname"
+                  value={session?.user?.name}
                   className="block w-full border rounded p-2 outline-none"
                   readOnly
                 />
@@ -55,6 +56,7 @@ const Profile = async () => {
                   type="email"
                   name="email"
                   placeholder="email"
+                  value={session?.user?.email}
                   className="block w-full border rounded p-2 outline-none"
                   readOnly
                 />
