@@ -26,7 +26,12 @@ export default async function Home() {
         {/* cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 my-10">
           {features.map((i) => (
-            <Card title={i.title} icon={i.icon} description={i.description} />
+            <Card
+              key={i.title}
+              title={i.title}
+              icon={i.icon}
+              description={i.description}
+            />
           ))}
         </div>
       </section>
