@@ -2,11 +2,14 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import CTA from "@/components/button/CTA";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
-import React from "react";
+import { redirect } from "next/navigation";
+
 
 const Profile = async () => {
   const session = await getServerSession(authOptions);
-  console.log("session:" + session);
+
+  // redirect to landing page if user is not authenticated
+  if (!session) redirect("/");
   return (
     <div className="mx-auto max-w-3xl">
       {/* display a form that fetches the user details from the db auth */}
