@@ -111,7 +111,13 @@ const DashboardNav = () => {
                     </Link>
 
                     {/* logout button */}
-                    <CTA icon={false} title={"Logout"} />
+                    <button
+                      type="submit"
+                      className="button"
+                      onClick={() => signOut()}
+                    >
+                      Logout
+                    </button>
                   </div>
                 </div>
               )}
