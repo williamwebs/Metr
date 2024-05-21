@@ -1,5 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import ValidateBiller from "@/components/forms/ValidateBiller";
+import Balance from "@/components/wallet/Balance";
 import { faHand } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getServerSession } from "next-auth";
@@ -20,19 +21,28 @@ const Dashboard = async () => {
       {/* display recent transactions */}
       {/* display a form to make payments */}
       <div className="flex justify-center">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl">
-            Welcome to Your <span className="text-black font-bold">Metr:</span>
-          </h1>
-          <div>
-            <FontAwesomeIcon
-              icon={faHand}
-              className="w-6 text-orange-500"
-              shake
-            />
+        <div className="flex flex-col gap-5">
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl">
+              Welcome to Your{" "}
+              <span className="text-black font-bold">Metr:</span>
+            </h1>
+            <div>
+              <FontAwesomeIcon
+                icon={faHand}
+                className="w-6 text-orange-500"
+                shake
+              />
+            </div>
           </div>
         </div>
       </div>
+
+      {/* wallet balance */}
+      <div className="max-w-xl mx-auto">
+        <Balance />
+      </div>
+
       {!profileCompleted && (
         <div className="mt-10 text-center max-w-60 mx-auto">
           <p className="">

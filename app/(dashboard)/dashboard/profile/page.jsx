@@ -1,9 +1,9 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import CTA from "@/components/button/CTA";
+import Balance from "@/components/wallet/Balance";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-
 
 const Profile = async () => {
   const session = await getServerSession(authOptions);
@@ -26,6 +26,7 @@ const Profile = async () => {
         </div>
 
         <div className="w-full">
+          <Balance />
           <div>
             <p className="mb-10">
               Fill in your{" "}
