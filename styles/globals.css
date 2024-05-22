@@ -15,3 +15,11 @@ body {
 .button {
   @apply flex items-center gap-4 shadow bg-orange-500 border border-orange-500 py-2 px-8 text-sm text-white rounded-full w-fit hover:bg-transparent hover:text-orange-500 transition-all duration-500;
 }
+
+.input {
+  @apply block w-full border rounded p-2 outline-amber-500;
+}
+
+.read-only_input {
+  @apply block w-full border rounded p-2 outline-none;
+}

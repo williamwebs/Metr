@@ -49,7 +49,7 @@ const Profile = async () => {
                   name="name"
                   placeholder="fullname"
                   value={session?.user?.name}
-                  className="block w-full border rounded p-2 outline-none"
+                  className="read-only_input"
                   readOnly
                 />
               </div>
@@ -61,7 +61,7 @@ const Profile = async () => {
                   name="email"
                   placeholder="email"
                   value={session?.user?.email}
-                  className="block w-full border rounded p-2 outline-none"
+                  className="read-only_input"
                   readOnly
                 />
               </div>
@@ -72,7 +72,7 @@ const Profile = async () => {
                   type="tel"
                   name="phone"
                   placeholder="phone"
-                  className="block w-full border rounded p-2 outline-amber-500"
+                  className="input"
                 />
               </div>
 
@@ -82,7 +82,7 @@ const Profile = async () => {
                   type="number"
                   name="meter"
                   placeholder="meter"
-                  className="block w-full border rounded p-2 outline-amber-500"
+                  className="input"
                 />
               </div>
             </div>

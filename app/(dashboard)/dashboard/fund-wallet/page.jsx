@@ -27,7 +27,13 @@ const page = () => {
       firstname: fields.firstname,
       lastname: fields.lastname,
       onSuccess(transaction) {
+        alert(transaction.reference);
         router.push("/dashboard");
+        // save the transaction ref in the db with the user email
+        // if the transaction is successful, add the amount to the amount the user wallet in the db
+      },
+      onCancel() {
+        alert("Payment Unsuccessful. Try again!");
       },
     });
   };
@@ -42,7 +48,7 @@ const page = () => {
             name="email"
             type="email"
             id="email-address"
-            className="block border w-full h-10 rounded px-2 outline-amber-500"
+            className="input"
             required
           />
         </div>
@@ -53,7 +59,7 @@ const page = () => {
             name="amount"
             type="tel"
             id="amount"
-            className="block border w-full h-10 rounded px-2 outline-amber-500"
+            className="input"
             required
           />
         </div>
@@ -64,7 +70,7 @@ const page = () => {
             name="firstname"
             type="text"
             id="first-name"
-            className="block border w-full h-10 rounded px-2 outline-amber-500"
+            className="input"
           />
         </div>
         <div className="form-group">
@@ -74,7 +80,7 @@ const page = () => {
             name="lastname"
             type="text"
             id="last-name"
-            className="block border w-full h-10 rounded px-2 outline-amber-500"
+            className="input"
           />
         </div>
         <div className="form-submit mt-5">

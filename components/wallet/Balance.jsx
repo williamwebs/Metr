@@ -1,21 +1,40 @@
 "use client";
 
+import axios from "axios";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
 const Balance = () => {
-  const fundWallet = () => {
-    console.log("wallet funded!");
+  const [balance, setBalance] = useState("0");
+
+  const fetchBalance = async () => {
+    try {
+      const response = await axios.get("/api/wallet/get-balance");
+
+      const balanceData = await response.data;
+
+      setBalance(balanceData.balance);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    fetchBalance();
+  }, [balance]);
+
   return (
     <aside className="shadow p-4 mb-5 rounded-md flex items-center justify-between">
       <div className="flex-1">
         <h4 className="text-2xl text-slate-950 font-bold">
-          <span className="text-base">NGN</span> 4000
+          <span className="text-base">NGN</span> {balance}
         </h4>
       </div>
       <div className="w-fit">
         {/* button to fund wallet */}
-        <button onClick={fundWallet} className="button">
+        <Link href={"/dashboard/fund-wallet"} className="button">
           Fund Wallet
-        </button>
+        </Link>
       </div>
     </aside>
   );
