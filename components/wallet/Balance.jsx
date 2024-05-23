@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Balance = () => {
-  const [balance, setBalance] = useState("0");
+  const [balance, setBalance] = useState(0);
 
   const fetchBalance = async () => {
     try {

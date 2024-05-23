@@ -3,6 +3,7 @@
 import { useState } from "react";
 import PaystackPop from "@paystack/inline-js";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const page = () => {
   const [fields, setFields] = useState({});
@@ -14,6 +15,16 @@ const page = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  // const updateBalance = async ({ transaction }) => {
+  //   const response = await axios.post("/api/wallet/update", {
+  //     email: fields.email,
+  //     amount: fields.amount,
+  //     transactionRef: transaction.reference,
+  //   });
+  //   console.log(response.data);
+  //   router.push("/dashboard");
+  // };
 
   const handlePay = (e) => {
     e.preventDefault();
@@ -27,10 +38,20 @@ const page = () => {
       firstname: fields.firstname,
       lastname: fields.lastname,
       onSuccess(transaction) {
-        alert(transaction.reference);
-        router.push("/dashboard");
-        // save the transaction ref in the db with the user email
+        // alert(transaction.reference);
         // if the transaction is successful, add the amount to the amount the user wallet in the db
+        axios
+          .post("/api/wallet/update", {
+            email: fields.email,
+            amount: fields.amount,
+            transactionRef: transaction.reference,
+          })
+          .then((response) => {
+            console.log(response.data);
+            router.push("/dashboard");
+          })
+          .catch((error) => console.log(error));
+        // save the transaction ref in the db with the user email
       },
       onCancel() {
         alert("Payment Unsuccessful. Try again!");
@@ -84,7 +105,7 @@ const page = () => {
           />
         </div>
         <div className="form-submit mt-5">
-          <button className="button" type="submit" onclick="payWithPaystack()">
+          <button className="button" type="submit">
             Pay
           </button>
         </div>
