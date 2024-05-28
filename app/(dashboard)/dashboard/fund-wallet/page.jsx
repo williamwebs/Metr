@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import PaystackPop from "@paystack/inline-js";
+// import PaystackPop from "@paystack/inline-js";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
