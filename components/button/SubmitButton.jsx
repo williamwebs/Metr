@@ -1,12 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { useFormStatus } from "react-dom";
 
-const SubmitButton = ({ title }) => {
+const SubmitButton = ({ title, loading = false }) => {
   const { pending } = useFormStatus();
+
   return (
-    <button type="submit" disabled={pending} className="button">
-      {pending ? "loading..." : title}
+    <button type="submit" disabled={pending || loading} className="button">
+      {pending || loading ? "loading..." : title}
     </button>
   );
 };
