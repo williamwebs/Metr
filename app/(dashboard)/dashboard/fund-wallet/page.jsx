@@ -5,7 +5,7 @@ import PaystackPop from "@paystack/inline-js";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
-const page = () => {
+const FundWallet = () => {
   const [fields, setFields] = useState({});
   const [charges, setCharges] = useState(0);
 
@@ -128,4 +128,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default FundWallet;
