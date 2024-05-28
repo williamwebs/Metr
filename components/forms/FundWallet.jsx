@@ -65,8 +65,7 @@ const FundWallet = () => {
   };
 
   return (
-    <main className="mx-auto max-w-md my-10 p-5 shadow rounded-md">
-      {/* <FundWallet /> */}
+    <div>
       <form id="paymentForm" onSubmit={handlePay}>
         <div className="form-group">
           <label>Email Address</label>
@@ -124,7 +123,7 @@ const FundWallet = () => {
           </button>
         </div>
       </form>
-    </main>
+    </div>
   );
 };
 
