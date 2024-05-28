@@ -5,11 +5,14 @@ import PaystackPop from "@paystack/inline-js";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+import dynamic from "next/dynamic";
+
 const FundWallet = () => {
   const [fields, setFields] = useState({});
   const [charges, setCharges] = useState(0);
-
   const router = useRouter();
+
+   const paystack = new PaystackPop();
 
   const handleChange = (e) => {
     setFields({
@@ -35,7 +38,13 @@ const FundWallet = () => {
 
     const amountPlusCharges = fields.amount * 100 + charges * 100;
 
-    const paystack = new PaystackPop();
+    // to ensure that the PaystackPop library is only loaded on the client-side, and the window object will be available.
+    // const PaystackPop = dynamic(() => import("@paystack/inline-js"), {
+    //   ssr: false,
+    // });
+
+    // const paystack = new PaystackPop();
+
     paystack.newTransaction({
       key: "pk_test_8c0bed0b4ca48814e11b62f08cee437c685ac2b0",
       amount: amountPlusCharges, // fields.amount * 100
