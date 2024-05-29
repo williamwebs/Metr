@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import PaystackPop from "@paystack/inline-js";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useFlutterwave } from "flutterwave-react-v3";
 
 const FundWallet = () => {
   const [fields, setFields] = useState({});
@@ -29,17 +30,46 @@ const FundWallet = () => {
     updateCharges();
   }, [fields.amount]);
 
-  const paystackRef = useRef(null);
+  const amountPlusCharges = parseInt(fields.amount) + parseInt(charges);
+  // const amountPlusCharges = fields.amount * 100 + charges * 100;
+  //
+  const config = {
+    public_key: "FLWPUBK_TEST-19e715a1adaf0bcdd5181f4e33dc4e68-X",
+    tx_ref: Date.now(),
+    amount: amountPlusCharges,
+    currency: "NGN",
+    payment_options: "card,mobilemoney,ussd",
+    customer: {
+      email: fields.email,
+      phone_number: "070********",
+      name: fields.firstname,
+    },
+    customizations: {
+      title: "my Payment Title",
+      description: "Payment for items in cart",
+      logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
+    },
+  };
 
-  useEffect(() => {
-    const paystack = new PaystackPop();
-    paystackRef.current = paystack;
-  }, []);
+  const handleFlutterPayment = useFlutterwave(config);
+  //
 
   const handlePay = (e) => {
     e.preventDefault();
 
-    const amountPlusCharges = fields.amount * 100 + charges * 100;
+    handleFlutterPayment({
+      callback: (response) => {
+        console.log(response.status);
+
+        if (response.status === "successful") {
+          router.push("/dashboard");
+          closePaymentModal();
+        }
+      },
+      onClose: () => {},
+    });
+
+    // const paystack = new PaystackPop();
 
     // try flutterwave
 
@@ -48,32 +78,32 @@ const FundWallet = () => {
     //   ssr: false,
     // });
 
-   paystackRef.current.newTransaction({
-     key: "pk_test_8c0bed0b4ca48814e11b62f08cee437c685ac2b0",
-     amount: amountPlusCharges, // fields.amount * 100
-     email: fields.email,
-     firstname: fields.firstname,
-     lastname: fields.lastname,
-     onSuccess(transaction) {
-       // alert(transaction.reference);
-       // if the transaction is successful, add the amount to the amount the user wallet in the db
-       // save the transaction ref in the db with the user email
-       axios
-         .post("/api/wallet/update", {
-           email: fields.email,
-           amount: parseInt(fields.amount), // fields.amount
-           transactionRef: transaction.reference,
-         })
-         .then((response) => {
-           router.push("/dashboard");
-           console.log(response.data);
-         })
-         .catch((error) => console.log(error));
-     },
-     onCancel() {
-       alert("Payment Unsuccessful. Try again!");
-     },
-   });
+    // paystack.newTransaction({
+    //   key: "pk_test_8c0bed0b4ca48814e11b62f08cee437c685ac2b0",
+    //   amount: amountPlusCharges, // fields.amount * 100
+    //   email: fields.email,
+    //   firstname: fields.firstname,
+    //   lastname: fields.lastname,
+    //   onSuccess(transaction) {
+    //     // alert(transaction.reference);
+    //     // if the transaction is successful, add the amount to the amount the user wallet in the db
+    //     // save the transaction ref in the db with the user email
+    //     axios
+    //       .post("/api/wallet/update", {
+    //         email: fields.email,
+    //         amount: parseInt(fields.amount), // fields.amount
+    //         transactionRef: transaction.reference,
+    //       })
+    //       .then((response) => {
+    //         router.push("/dashboard");
+    //         console.log(response.data);
+    //       })
+    //       .catch((error) => console.log(error));
+    //   },
+    //   onCancel() {
+    //     alert("Payment Unsuccessful. Try again!");
+    //   },
+    // });
   };
 
   return (
