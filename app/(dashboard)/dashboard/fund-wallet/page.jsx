@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-// import PaystackPop from "@paystack/inline-js";
+import PaystackPop from "@paystack/inline-js";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
@@ -29,44 +29,48 @@ const FundWallet = () => {
     updateCharges();
   }, [fields.amount]);
 
+  // useEffect(() => {
+  // }, []);
+  const paystack = new PaystackPop();
+
   const handlePay = (e) => {
     e.preventDefault();
 
     const amountPlusCharges = fields.amount * 100 + charges * 100;
+
+    // try flutterwave
 
     // to ensure that the PaystackPop library is only loaded on the client-side, and the window object will be available.
     // const PaystackPop = dynamic(() => import("@paystack/inline-js"), {
     //   ssr: false,
     // });
 
-    // const paystack = new PaystackPop();
-
-    // paystack.newTransaction({
-    //   key: "pk_test_8c0bed0b4ca48814e11b62f08cee437c685ac2b0",
-    //   amount: amountPlusCharges, // fields.amount * 100
-    //   email: fields.email,
-    //   firstname: fields.firstname,
-    //   lastname: fields.lastname,
-    //   onSuccess(transaction) {
-    //     // alert(transaction.reference);
-    //     // if the transaction is successful, add the amount to the amount the user wallet in the db
-    //     // save the transaction ref in the db with the user email
-    //     axios
-    //       .post("/api/wallet/update", {
-    //         email: fields.email,
-    //         amount: parseInt(fields.amount), // fields.amount
-    //         transactionRef: transaction.reference,
-    //       })
-    //       .then((response) => {
-    //         router.push("/dashboard");
-    //         console.log(response.data);
-    //       })
-    //       .catch((error) => console.log(error));
-    //   },
-    //   onCancel() {
-    //     alert("Payment Unsuccessful. Try again!");
-    //   },
-    // });
+    paystack.newTransaction({
+      key: "pk_test_8c0bed0b4ca48814e11b62f08cee437c685ac2b0",
+      amount: amountPlusCharges, // fields.amount * 100
+      email: fields.email,
+      firstname: fields.firstname,
+      lastname: fields.lastname,
+      onSuccess(transaction) {
+        // alert(transaction.reference);
+        // if the transaction is successful, add the amount to the amount the user wallet in the db
+        // save the transaction ref in the db with the user email
+        axios
+          .post("/api/wallet/update", {
+            email: fields.email,
+            amount: parseInt(fields.amount), // fields.amount
+            transactionRef: transaction.reference,
+          })
+          .then((response) => {
+            router.push("/dashboard");
+            console.log(response.data);
+          })
+          .catch((error) => console.log(error));
+      },
+      onCancel() {
+        alert("Payment Unsuccessful. Try again!");
+      },
+    });
   };
 
   return (
