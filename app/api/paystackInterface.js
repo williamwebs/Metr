@@ -1,14 +1,17 @@
+import axios from "axios";
+
 export const handlePayment = (email, amount, amountWithoutCharges) => {
-  const saveTransactionInDB = async (response) => {
+  const saveTransactionInDB = (response) => {
     try {
-      await axios
+      axios
         .post("/api/wallet/update", {
           email,
           amount: parseInt(amountWithoutCharges), // fields.amount
           transactionRef: response.reference,
         })
         .then((response) => {
-          router.push("/dashboard");
+          //   router.push("/dashboard");
+          window.location.href = "/dashboard"; // Redirect to dashboard
           console.log(response.data);
         })
         .catch((error) => console.log(error));
@@ -23,11 +26,10 @@ export const handlePayment = (email, amount, amountWithoutCharges) => {
     amount,
 
     onClose: () => {
-      alert("windows closed");
+    //   alert("windows closed");
     },
     callback: function (response) {
       saveTransactionInDB(response);
-      alert(response.transaction);
     },
   });
 

@@ -31,9 +31,9 @@ const FundWallet = () => {
     updateCharges();
   }, [fields.amount]);
 
-  const amountWithoutCharges = fields.amount * 100;
+  const amountWithoutCharges = fields.amount;
 
-  const amountPlusCharges = amountWithoutCharges + charges * 100;
+  const amountPlusCharges = amountWithoutCharges * 100 + charges * 100;
 
   const handlePay = (e) => {
     e.preventDefault();
