@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePaystackPayment } from "react-paystack";
 
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -32,59 +31,14 @@ const FundWallet = () => {
     updateCharges();
   }, [fields.amount]);
 
-  const amountPlusCharges = fields.amount * 100 + charges * 100;
+  const amountWithoutCharges = fields.amount * 100;
 
-  const config = {
-    reference: new Date().getTime().toString(),
-    email: fields.email,
-    amount: amountPlusCharges, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-    publicKey: "pk_test_8c0bed0b4ca48814e11b62f08cee437c685ac2b0",
-  };
-
-  // you can call this function anything
-  const onSuccess = (reference) => {
-    console.log(fields.email);
-
-    console.log("successful");
-    // if the transaction is successful, add the amount to the amount the user wallet in the db
-    // save the transaction ref in the db with the user email
-
-    // axios
-    //   .post("/api/wallet/update", {
-    //     email: fields.email,
-    //     amount: parseInt(fields.amount), // fields.amount
-    //     transactionRef: transaction.reference,
-    //   })
-    //   .then((response) => {
-    //     router.push("/dashboard");
-    //     console.log(response.data);
-    //   })
-    //   .catch((error) => console.log(error));
-  };
-
-  const onClose = () => {
-    console.log("closed");
-    alert("Payment Unsuccessful. Try again!");
-  };
-
-  const initializePayment = usePaystackPayment(config, onSuccess, onClose);
+  const amountPlusCharges = amountWithoutCharges + charges * 100;
 
   const handlePay = (e) => {
     e.preventDefault();
-    handlePayment(fields.email, amountPlusCharges);
+    handlePayment(fields.email, amountPlusCharges, amountWithoutCharges);
   };
-  // const handlePay = (e) => {
-  //   e.preventDefault();
-  //   console.log(initializePayment);
-  //   initializePayment(config, onSuccess, onClose);
-  // };
-
-  // const initializePayment = usePaystackPayment(config);
-
-  // const handlePay = (e) => {
-  //   e.preventDefault();
-  //   initializePayment(handleSuccess, handleClose);
-  // };
 
   return (
     <>
