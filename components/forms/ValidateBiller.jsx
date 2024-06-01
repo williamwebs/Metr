@@ -59,6 +59,7 @@ const ValidateBiller = () => {
           handleFormChange={handleFormChange}
           setValidated={setValidated}
           isLoading={isLoading}
+          service={formFields.service}
         />
       )}
 

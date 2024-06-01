@@ -1,15 +1,36 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+"use client";
+
+// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import CTA from "@/components/button/CTA";
 import Balance from "@/components/wallet/Balance";
-import { getServerSession } from "next-auth";
+import axios from "axios";
 import Image from "next/image";
-import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+// import { getServerSession } from "next-auth";
+// import Image from "next/image";
+// import { redirect } from "next/navigation";
 
-const Profile = async () => {
-  const session = await getServerSession(authOptions);
+const Profile = () => {
+  const [profile, setProfile] = useState();
+  // const session = await getServerSession(authOptions);
 
-  // redirect to landing page if user is not authenticated
-  if (!session) redirect("/");
+  // // redirect to landing page if user is not authenticated
+  // if (!session) redirect("/");
+
+  const fetchProfile = async () => {
+    const res = await axios.get("/api/fetch-profile");
+    setProfile(res.data);
+    console.log(res.data.userProfileInfo);
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  if (!profile) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="mx-auto max-w-3xl">
       {/* display a form that fetches the user details from the db auth */}
@@ -17,7 +38,7 @@ const Profile = async () => {
       <div className="flex flex-col md:flex-row items-start gap-10 md:gap-20">
         <div className="rounded-full flex items-center justify-center shadow">
           <Image
-            src={session?.user?.image}
+            src={profile.userImage}
             alt="avartar"
             width={100}
             height={100}
@@ -48,7 +69,7 @@ const Profile = async () => {
                   type="text"
                   name="name"
                   placeholder="fullname"
-                  value={session?.user?.name}
+                  value={profile.userName}
                   className="read-only_input"
                   readOnly
                 />
@@ -60,7 +81,7 @@ const Profile = async () => {
                   type="email"
                   name="email"
                   placeholder="email"
-                  value={session?.user?.email}
+                  value={profile.userEmail}
                   className="read-only_input"
                   readOnly
                 />
@@ -83,6 +104,8 @@ const Profile = async () => {
                   name="meter"
                   placeholder="meter"
                   className="input"
+                  value={profile.userProfileInfo[0].meterNumber}
+                  readOnly
                 />
               </div>
               <div>
@@ -92,6 +115,8 @@ const Profile = async () => {
                   name="customerName"
                   placeholder="Customer name"
                   className="input"
+                  value={profile.userProfileInfo[0].customerName}
+                  readOnly
                 />
               </div>
               <div>
@@ -101,6 +126,8 @@ const Profile = async () => {
                   name="customerAddress"
                   placeholder="Customer address"
                   className="input"
+                  value={profile.userProfileInfo[0].customerAddress}
+                  readOnly
                 />
               </div>
             </div>

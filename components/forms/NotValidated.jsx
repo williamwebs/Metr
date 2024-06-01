@@ -15,6 +15,7 @@ const NotValidated = ({
   handleFormChange,
   setValidated,
   isLoading,
+  service,
 }) => {
   const [providers, setProviders] = useState();
 
@@ -29,9 +30,14 @@ const NotValidated = ({
   }, []);
 
   // save customer meter details in the db
-  const saveMeterDetailsTDB = () => {
+  const saveMeterDetailsTDB = async (service) => {
     // api route to save meter details in the profile object in the wallet
-    console.log("saved!");
+    const response = await axios.post("/api/profile-save", {
+      validationResult,
+      service,
+    });
+
+    console.log(response);
   };
 
   return (
@@ -114,7 +120,7 @@ const NotValidated = ({
               </button>
               <button
                 className="button flex items-center gap-1"
-                onClick={saveMeterDetailsTDB}
+                onClick={() => saveMeterDetailsTDB(service)}
               >
                 Save
                 <FontAwesomeIcon icon={faCloudArrowUp} />
