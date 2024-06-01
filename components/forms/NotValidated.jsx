@@ -4,7 +4,10 @@ import axios from "axios";
 import SubmitButton from "../button/SubmitButton";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCloudArrowUp, faLocationArrow } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCloudArrowUp,
+  faLocationArrow,
+} from "@fortawesome/free-solid-svg-icons";
 
 const NotValidated = ({
   validationResult,
@@ -24,6 +27,12 @@ const NotValidated = ({
   useEffect(() => {
     fetchProviders();
   }, []);
+
+  // save customer meter details in the db
+  const saveMeterDetailsTDB = () => {
+    // api route to save meter details in the profile object in the wallet
+    console.log("saved!");
+  };
 
   return (
     <div>
@@ -96,13 +105,16 @@ const NotValidated = ({
         <div className="my-5 w-full block mx-auto">
           {validationResult ? (
             <div className="flex items-center justify-between">
-              <button className="button flex items-center gap-1" onClick={() => setValidated(true)}>
+              <button
+                className="button flex items-center gap-1"
+                onClick={() => setValidated(true)}
+              >
                 Continue
                 <FontAwesomeIcon icon={faLocationArrow} />
               </button>
               <button
                 className="button flex items-center gap-1"
-                onClick={() => {}}
+                onClick={saveMeterDetailsTDB}
               >
                 Save
                 <FontAwesomeIcon icon={faCloudArrowUp} />

@@ -24,6 +24,26 @@ const WalletSchema = new Schema(
         },
       },
     ],
+    profile: {
+      customerName: {
+        type: String,
+      },
+      customerAddress: {
+        type: String,
+      },
+      meterNumber: {
+        type: Number,
+      },
+      meterType: {
+        type: String,
+      },
+      service: {
+        type: String,
+      },
+      phoneNumber: {
+        type: Number,
+      },
+    },
   },
   { timestamps: true }
 );
