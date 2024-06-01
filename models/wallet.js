@@ -42,7 +42,7 @@ const WalletSchema = new Schema(
           type: String,
         },
         phoneNumber: {
-          type: Number,
+          type: String,
         },
       },
     ],

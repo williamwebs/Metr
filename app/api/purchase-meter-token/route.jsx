@@ -27,7 +27,7 @@ export const POST = async (req, res) => {
 
     // check if the user has a wallet created already attached to their email address
     const userWallet = await Wallet.findOne({ user: session?.user?.email });
-    const userBalance = userWallet.balance;
+    let userBalance = userWallet.balance;
 
     console.log(userBalance);
 

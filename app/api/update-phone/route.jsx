@@ -5,9 +5,7 @@ import mongoose from "mongoose";
 import { Wallet } from "@/models/wallet";
 
 export const POST = async (req, res) => {
-  const { validationResult, service, phoneNumber } = await req.json();
-  const { customerAddress, customerName, meterNumber, meterType } =
-    validationResult;
+  const { phoneNumber } = await req.json();
 
   const session = await getServerSession(authOptions);
   mongoose.connect(process.env.MONGODB_URI);
@@ -17,20 +15,20 @@ export const POST = async (req, res) => {
     const userWallet = await Wallet.findOne({ user: userEmail });
 
     if (userWallet) {
-      const newProfile = {
-        customerAddress,
-        customerName,
-        meterNumber,
-        meterType,
-        service,
-        phoneNumber: phoneNumber.toString(),
+      const update = {
+        $set: {
+          "profile.0.phoneNumber": phoneNumber.toString(),
+        },
       };
 
-      userWallet.profile.push(newProfile);
-      await userWallet.save();
+      const userWallet = await Wallet.findOneAndUpdate(
+        { user: userEmail },
+        update,
+        { new: true }
+      );
 
       return NextResponse.json({
-        message: "profile saved successfully!",
+        message: "phone number saved successfully!",
       });
     } else {
       return NextResponse.json({
@@ -40,7 +38,7 @@ export const POST = async (req, res) => {
   } catch (error) {
     console.log(error);
     return NextResponse.json({
-      error: `error saving profile: ${error}`,
+      error: `error saving phone number: ${error}`,
     });
   }
 };
