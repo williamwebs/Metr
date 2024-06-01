@@ -44,6 +44,7 @@ const ValidateBiller = () => {
     if (response.data.status === "successful") {
       setValidationResult(response.data.data);
       setIsLoading(false);
+      console.log(validationResult);
     }
 
     setIsLoading(false);
@@ -65,6 +66,7 @@ const ValidateBiller = () => {
         <Validated
           validationResult={validationResult}
           handleBack={handleBack}
+          service={formFields.service}
         />
       )}
     </div>

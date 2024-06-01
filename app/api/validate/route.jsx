@@ -30,7 +30,7 @@ export const POST = async (req, res) => {
       }
     );
 
-    // return the response
+    console.log(response.data);
     return NextResponse.json(response.data);
   } catch (error) {
     return NextResponse.json({

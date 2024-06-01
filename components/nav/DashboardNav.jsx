@@ -50,6 +50,12 @@ const DashboardNav = () => {
                 >
                   Profile
                 </Link>
+                <Link
+                  href={"/dashboard/transactions"}
+                  className="text-sm font-medium text-gray-500"
+                >
+                  Transactions
+                </Link>
               </div>
             </div>
 
@@ -93,7 +99,7 @@ const DashboardNav = () => {
 
               {/* mobile menu */}
               {openMenu && (
-                <div className="absolute top-14 right-0 max-w-56 min-h-60 py-10 px-5 shadow-md rounded-2xl bg-white/90 backdrop-blur-md z-10">
+                <div className="absolute top-14 right-0 max-w-56 min-h-60 py-10 px-5 shadow-md rounded-2xl bg-white backdrop-blur-md z-10">
                   <div className="flex flex-col md:hidden gap-4">
                     <Link
                       href={"/dashboard"}
@@ -108,6 +114,13 @@ const DashboardNav = () => {
                       onClick={() => setOpenMenu((prev) => !prev)}
                     >
                       Profile
+                    </Link>
+                    <Link
+                      href={"/dashboard/transactions"}
+                      className="text-sm font-medium text-gray-500"
+                      onClick={() => setOpenMenu((prev) => !prev)}
+                    >
+                      Transactions
                     </Link>
 
                     {/* logout button */}

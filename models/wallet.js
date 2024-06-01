@@ -14,6 +14,14 @@ const WalletSchema = new Schema(
       {
         reference: String,
         amount: Number,
+        type: {
+          type: String,
+          enum: ["fund", "withdrawal"],
+        },
+        date: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
   },

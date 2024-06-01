@@ -17,7 +17,7 @@ body {
 }
 
 .input {
-  @apply block w-full border rounded p-2 outline-amber-500;
+  @apply block w-full border rounded p-2 outline-amber-500 resize-none;
 }
 
 .read-only_input {

@@ -18,8 +18,25 @@ export const POST = async (req) => {
 
     if (userWallet) {
       // update the db with the amount
-      userWallet.balance = parseInt(userWallet.balance) + parseInt(amount);
-      userWallet.transactions.push({ reference: transactionRef, amount });
+      const newTransaction = {
+        reference: transactionRef,
+        amount,
+        type: "fund",
+      };
+      userWallet.transactions.push(newTransaction);
+      //  userWallet.transactions.push({ reference: transactionRef, amount });
+      //  await userWallet.save();
+
+      //      userWallet.balance = parseInt(userWallet.balance) + parseInt(amount);
+      const lastTransaction =
+        userWallet.transactions[userWallet.transactions.length - 1];
+
+      if (lastTransaction.type === "fund") {
+        userWallet.balance = parseInt(userWallet.balance) + parseInt(amount);
+      } else if (lastTransaction.type === "withdrawal") {
+        userWallet.balance = parseInt(userWallet.balance) - parseInt(amount);
+      }
+
       await userWallet.save();
 
       return NextResponse.json({

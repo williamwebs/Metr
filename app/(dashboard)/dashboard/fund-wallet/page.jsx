@@ -2,15 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-import { useRouter } from "next/navigation";
-import axios from "axios";
 import Script from "next/script";
 import { handlePayment } from "@/app/api/paystackInterface";
 
 const FundWallet = () => {
   const [fields, setFields] = useState({});
   const [charges, setCharges] = useState(0);
-  const router = useRouter();
 
   const handleChange = (e) => {
     setFields({

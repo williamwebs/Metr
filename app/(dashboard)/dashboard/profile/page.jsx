@@ -85,6 +85,24 @@ const Profile = async () => {
                   className="input"
                 />
               </div>
+              <div>
+                <label htmlFor="meter">Customer Name</label>
+                <input
+                  type="text"
+                  name="customerName"
+                  placeholder="Customer name"
+                  className="input"
+                />
+              </div>
+              <div>
+                <label htmlFor="meter">Customer Address</label>
+                <textarea
+                  type="text"
+                  name="customerAddress"
+                  placeholder="Customer address"
+                  className="input"
+                />
+              </div>
             </div>
 
             <div className="my-10 w-full block mx-auto">

@@ -8,6 +8,7 @@ export const handlePayment = (email, amount, amountWithoutCharges) => {
           email,
           amount: parseInt(amountWithoutCharges), // fields.amount
           transactionRef: response.reference,
+          type: "fund",
         })
         .then((response) => {
           //   router.push("/dashboard");
@@ -26,7 +27,7 @@ export const handlePayment = (email, amount, amountWithoutCharges) => {
     amount,
 
     onClose: () => {
-    //   alert("windows closed");
+      //   alert("windows closed");
     },
     callback: function (response) {
       saveTransactionInDB(response);
