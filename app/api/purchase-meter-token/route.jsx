@@ -32,7 +32,7 @@ export const POST = async (req, res) => {
     console.log(userBalance);
 
     //   get payBeta wallet balance using the endpoint
-    const myWalletBalance = 0;
+    let myWalletBalance = 0;
 
     // const username = "anazawilliam1@gmail.com";
     // const password = "Williampay#1";
