@@ -86,14 +86,33 @@ export const POST = async (req, res) => {
           console.log(res);
           console.log(res.data);
           console.log(res.status);
+          console.log(res.data.token);
+          console.log(res.data.unit);
 
           if (res.status === "successful") {
             // deduct amount from user wallet & update the wallet balance
             userBalance = userBalance - amount;
+
+            console.log(res.data.unit);
+
+            let unit = res.data.unit;
+            let token = res.data.token;
+
             /*
-              - email notification (nodemail)
+              - get meter units from response
               - SMS notification (vonage)
             */
+
+            // email notification (nodemail)
+            let message = `You just purchased ${unit} units of electricity token. Welcome to the light! Here is your metr token ${token} - Metr`;
+            try {
+              await axios.post("/api/send-email", { message });
+
+              console.log("mail sent!");
+            } catch (error) {
+              console.log("mail not sent!");
+            }
+
             return NextResponse.json(res.data);
           } else {
             return NextResponse.json({
@@ -130,21 +149,6 @@ export const POST = async (req, res) => {
         further prompt them to fund their wallet to continue
       }
     */
-
-    /*
-      {
-        "status": "successful",
-        "message": "Request processed successfully.",
-        "data": {
-            "availableBalance": 4212.45,
-            "pnd": false,
-            "lienAmount": 0
-        }
-    }
-
-        const myWalletBalance = response.data.availableBalance
-        
-      */
   } catch (error) {
     return NextResponse.json({
       error: "An error occures. Try again Later or contact the technical team",

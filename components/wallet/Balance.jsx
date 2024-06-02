@@ -23,6 +23,18 @@ const Balance = () => {
     fetchBalance();
   }, [balance]);
 
+  const handleEmail = async (e) => {
+    e.preventDefault();
+
+    const message = "Testing";
+    try {
+      const response = await axios.post("/api/send-email", { message });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <aside className="shadow p-4 mb-5 rounded-md flex items-center justify-between">
       <div className="flex-1">

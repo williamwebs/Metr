@@ -10,6 +10,7 @@ const UserProfile = () => {
   const [profile, setProfile] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
 
+  // get user profile from db
   const fetchProfile = async () => {
     const res = await axios.get("/api/fetch-profile");
     setProfile(res.data);
@@ -21,6 +22,7 @@ const UserProfile = () => {
     fetchProfile();
   }, []);
 
+  // loading state
   if (!profile) {
     return <div>Loading...</div>;
   }
