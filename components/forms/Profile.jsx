@@ -14,8 +14,9 @@ const UserProfile = () => {
   const fetchProfile = async () => {
     const res = await axios.get("/api/fetch-profile");
     setProfile(res.data);
+    setPhoneNumber(res.data.userProfileInfo[0].phoneNumber);
 
-    console.log(res.data);
+    console.log(res.data.userProfileInfo[0].phoneNumber);
   };
 
   useEffect(() => {
@@ -34,6 +35,7 @@ const UserProfile = () => {
       const response = await axios.post("/api/update-phone", {
         phoneNumber: phoneNumber.toString(),
       });
+
       console.log(response);
     } catch (error) {
       console.log("error:", error);
@@ -98,8 +100,9 @@ const UserProfile = () => {
                 name="phone"
                 placeholder="phone"
                 className="input"
-                value={profile.userProfileInfo[0]?.phoneNumber}
+                // value={profile?.userProfileInfo[0]?.phoneNumber || ""}
                 onChange={(e) => setPhoneNumber(e.target.value)}
+                value={phoneNumber}
               />
             </div>
 

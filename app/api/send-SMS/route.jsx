@@ -1,7 +1,8 @@
 import { Vonage } from "@vonage/server-sdk";
+import { NextResponse } from "next/server";
 
 export const POST = async (req, res) => {
-  const { message } = await req.json();
+  const { phoneNumber } = await req.json();
   const vonage = new Vonage({
     apiKey: "",
     apiSecret: "",
@@ -10,13 +11,14 @@ export const POST = async (req, res) => {
   const from = process.env.VONAGE_VIRTUAL_NUMBER;
 
   try {
+    // check if user has number saved in profile
     const vonage_response = await vonage.sms.send({
-      to: formData.get("number"),
+      to: phoneNumber, // make it a number not string
       from,
       text: formData.get("text"),
     });
 
-    return {
+    return NextResponse.json({
       response:
         vonage_response.messages[0].status === "0"
           ? `🎉 Message sent successfully.`
@@ -24,7 +26,7 @@ export const POST = async (req, res) => {
               // prettier-ignore
               vonage_response.messages[0].error-text
             }`,
-    };
+    });
   } catch (error) {
     return NextResponse.json({
       error: "Message not sent",

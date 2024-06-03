@@ -1,5 +1,7 @@
 "use client";
 
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFormStatus } from "react-dom";
 
 const SubmitButton = ({ title, loading = false }) => {
@@ -7,7 +9,7 @@ const SubmitButton = ({ title, loading = false }) => {
 
   return (
     <button type="submit" disabled={pending || loading} className="button">
-      {pending || loading ? "loading..." : title}
+      {pending || loading ? <FontAwesomeIcon icon={faSpinner} spin /> : title}
     </button>
   );
 };
