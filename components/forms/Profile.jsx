@@ -9,6 +9,7 @@ import SubmitButton from "../button/SubmitButton";
 const UserProfile = () => {
   const [profile, setProfile] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
+  const [loading, setLoading] = useState(false);
 
   // get user profile from db
   const fetchProfile = async () => {
@@ -32,13 +33,16 @@ const UserProfile = () => {
   const updateProfile = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await axios.post("/api/update-phone", {
         phoneNumber: phoneNumber.toString(),
       });
 
       console.log(response);
+      setLoading(false);
     } catch (error) {
       console.log("error:", error);
+      setLoading(false);
     }
   };
 
@@ -112,7 +116,7 @@ const UserProfile = () => {
                 type="number"
                 name="meter"
                 placeholder="meter"
-                className="input"
+                className="read-only_input"
                 value={profile.userProfileInfo[0].meterNumber}
                 readOnly
               />
@@ -123,7 +127,7 @@ const UserProfile = () => {
                 type="text"
                 name="customerName"
                 placeholder="Customer name"
-                className="input"
+                className="read-only_input"
                 value={profile.userProfileInfo[0].customerName}
                 readOnly
               />
@@ -134,7 +138,7 @@ const UserProfile = () => {
                 type="text"
                 name="customerAddress"
                 placeholder="Customer address"
-                className="input"
+                className="read-only_input"
                 value={profile.userProfileInfo[0].customerAddress}
                 readOnly
               />
@@ -142,7 +146,7 @@ const UserProfile = () => {
           </div>
 
           <div className="my-10 w-full block mx-auto">
-            <SubmitButton title={"Update Profile"} />
+            <SubmitButton title={"Update Profile"} loading={loading} />
           </div>
         </form>
       </div>

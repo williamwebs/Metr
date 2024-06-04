@@ -13,9 +13,10 @@ export const POST = async (req, res) => {
 
     const credentials = btoa(username + ":" + password);
     const basicAuth = "Basic " + credentials;
+    const baseURL = process.env.API_URL;
 
     const response = await axios.post(
-      `https://api-service.paybeta.ng/v1/electricity/validate`,
+      `${baseURL}/v1/electricity/validate`,
       {
         service: service,
         meterNumber: meterNumber,

@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import Validated from "./Validated";
 import NotValidated from "./NotValidated";
+import toast from "react-hot-toast";
 
 const ValidateBiller = () => {
   const [formFields, setFormFields] = useState({
@@ -42,6 +43,7 @@ const ValidateBiller = () => {
 
     // if successful set the data object to the state
     if (response.data.status === "successful") {
+      toast.success(`${response.data.message}`)
       setValidationResult(response.data.data);
       setIsLoading(false);
       console.log(validationResult);

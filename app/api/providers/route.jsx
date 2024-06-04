@@ -12,21 +12,18 @@ export const GET = async (req, res) => {
   try {
     const username = "anazawilliam1@gmail.com";
     const password = "Williampay#1";
-    // const baseURL = process.env.API_URL;
+    const baseURL = process.env.API_URL;
 
     const credentials = btoa(username + ":" + password);
     const basicAuth = "Basic " + credentials;
 
-    const response = await axios.get(
-      `https://api-service.paybeta.ng/v1/electricity/providers`,
-      {
-        headers: {
-          Authorization: basicAuth,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }
-    );
+    const response = await axios.get(`${baseURL}/v1/electricity/providers`, {
+      headers: {
+        Authorization: basicAuth,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
 
     return NextResponse.json(response.data);
   } catch (error) {

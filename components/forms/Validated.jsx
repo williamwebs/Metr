@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SubmitButton from "../button/SubmitButton";
 import axios from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const Validated = ({ validationResult, handleBack, service }) => {
   const [amount, setAmount] = useState();
@@ -16,7 +17,8 @@ const Validated = ({ validationResult, handleBack, service }) => {
     let reference = Math.floor(Math.random() * 10 ** 15).toString();
     console.log(reference);
 
-    const data = {
+    /**
+     const data = {
       service: service,
       meterNumber: validationResult.meterNumber,
       meterType: validationResult.meterType,
@@ -25,9 +27,24 @@ const Validated = ({ validationResult, handleBack, service }) => {
       customerAddress: validationResult.customerAddress,
       reference: reference,
     };
-    const response = await axios.post("api/purchase-meter-token", data);
+     */
 
+    const response = await axios.post("api/purchase-meter-token", {
+      service: service,
+      meterNumber: validationResult.meterNumber,
+      meterType: validationResult.meterType,
+      amount: parseInt(amount),
+      customerName: validationResult.customerName,
+      customerAddress: validationResult.customerAddress,
+      reference: reference,
+    });
     console.log(response.data);
+
+    if (response.data.status === "successful") {
+      toast.success(`${response.data.message}`);
+    } else {
+      toast.error("Purchase unsuccesssful!");
+    }
     // call the purchase meter token api here
   };
   return (

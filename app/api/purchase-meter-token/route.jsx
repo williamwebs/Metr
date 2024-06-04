@@ -3,6 +3,7 @@ import axios from "axios";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
+import mongoose from "mongoose";
 
 export const POST = async (req, res) => {
   const {
@@ -12,15 +13,29 @@ export const POST = async (req, res) => {
     meterNumber,
     meterType,
     service,
+    reference,
   } = await req.json();
 
-  const session = getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
-  const username = process.env.AUTHORIZATION_USERNAME;
-  const password = process.env.AUTHORIZATION_PASSWORD;
+  const username = "anazawilliam1@gmail.com";
+  const password = "Williampay#1";
 
   const credentials = btoa(username + ":" + password);
   const basicAuth = "Basic " + credentials;
+  const baseURL = process.env.API_URL;
+
+  // 62417430642
+
+  console.log(
+    customerName,
+    customerAddress,
+    amount,
+    meterNumber,
+    meterType,
+    service,
+    reference
+  );
 
   try {
     await mongoose.connect(process.env.MONGODB_URI);
@@ -29,30 +44,27 @@ export const POST = async (req, res) => {
     const userWallet = await Wallet.findOne({ user: session?.user?.email });
     let userBalance = userWallet.balance;
 
-    console.log(userBalance);
-
-    //   get payBeta wallet balance using the endpoint
+    //   get admin wallet balance
     let myWalletBalance = 0;
 
-    // const username = "anazawilliam1@gmail.com";
-    // const password = "Williampay#1";
-
-    const response = await axios.get(
-      "https://api-service.paybeta.ng/v1/wallet/balance",
-      {
-        headers: {
-          Authorization: basicAuth,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }
-    );
+    const response = await axios.get(`${baseURL}/v1/wallet/balance`, {
+      headers: {
+        Authorization: basicAuth,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
 
     console.log(response.data);
 
     if (response.status === "successful") {
-      myWalletBalance = response.data.availableBalance;
+      myWalletBalance = response.data.data.availableBalance;
       console.log(myWalletBalance);
+
+      console.log(myWalletBalance < amount);
+      return NextResponse.json({
+        message: "fetch paybeta balance returned",
+      });
 
       // check if the amount entered is less than the balance
       if (amount <= userBalance) {
@@ -65,14 +77,15 @@ export const POST = async (req, res) => {
 
         if (myWalletBalance >= amount) {
           const res = await axios.post(
-            "https://api-service.paybeta.ng/v1/electricity/purchase",
+            `${baseURL}/v1/electricity/purchase`,
             {
               customerName,
               customerAddress,
-              amount,
+              amount: parseInt(amount),
               meterNumber,
               meterType,
               service,
+              reference,
             },
             {
               headers: {
@@ -86,22 +99,35 @@ export const POST = async (req, res) => {
           console.log(res);
           console.log(res.data);
           console.log(res.status);
-          console.log(res.data.token);
-          console.log(res.data.unit);
+          console.log(res.data.data.token);
+          console.log(res.data.data.unit);
 
           if (res.status === "successful") {
+            // update the db with the transaction
+            const newTransaction = {
+              reference,
+              amount,
+              type: "withdrawal",
+            };
+            userWallet.transactions.push(newTransaction);
+
             // deduct amount from user wallet & update the wallet balance
-            userBalance = userBalance - amount;
+            const lastTransaction =
+              userWallet.transactions[userWallet.transactions.length - 1];
+
+            if (lastTransaction.type === "fund") {
+              userBalance = parseInt(userBalance) + parseInt(amount);
+            } else if (lastTransaction.type === "withdrawal") {
+              userBalance = parseInt(userBalance) - parseInt(amount);
+            }
+
+            // save in the db
+            await userWallet.save();
 
             console.log(res.data.unit);
 
-            let unit = res.data.unit;
-            let token = res.data.token;
-
-            /*
-              - get meter units from response
-              - SMS notification (vonage)
-            */
+            let unit = res.data.data.unit;
+            let token = res.data.data.token;
 
             // email notification (nodemail)
             let message = `You just purchased ${unit} units of electricity token. Welcome to the light! Here is your metr token ${token} - Metr`;
@@ -131,24 +157,6 @@ export const POST = async (req, res) => {
         error: "Error fetching wallet balance. Try again!",
       });
     }
-
-    /* check if the amount entered is less than the balance
-      if(amount <= wallet.balance) {
-      check if the amount in my paybeta wallet is greater than / equall to the amount
-        if(myWalletBalance > amount) {
-          purchase meter token
-          - deduct amount from user wallet
-          - update the wallet balance
-          - email notification (nodemail)
-          - SMS notification (vonage)
-        } else {
-          throw error to contact the developer attaching my whatsapp Link
-        }
-      } else {
-        throw error informing them that their wallet balance is insufficient for the transaction 
-        further prompt them to fund their wallet to continue
-      }
-    */
   } catch (error) {
     return NextResponse.json({
       error: "An error occures. Try again Later or contact the technical team",

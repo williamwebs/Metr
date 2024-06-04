@@ -24,10 +24,7 @@ export const POST = async (req) => {
         type: "fund",
       };
       userWallet.transactions.push(newTransaction);
-      //  userWallet.transactions.push({ reference: transactionRef, amount });
-      //  await userWallet.save();
 
-      //      userWallet.balance = parseInt(userWallet.balance) + parseInt(amount);
       const lastTransaction =
         userWallet.transactions[userWallet.transactions.length - 1];
 
@@ -48,9 +45,6 @@ export const POST = async (req) => {
       });
     }
   } catch (error) {
-    // return {
-    //   error: `failed to update balance ${error}`,
-    // };
     return NextResponse.json({
       error: "Failed to update wallet",
     });
